@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>在Redhat中安装和使用awstats + jawstats</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h2>在Redhat中安装和使用awstats + jawstats</h2>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>目录</h3>
+          <ul>
+            <li><a href="#ABOUT_SOFTWARE">About log analysis software</a></li>
+            <li><a href="#ABOUT">About awstats and jawstats</a></li>
+            <li><a href="#ENVIRONMENT">Environment</a></li>
+            <li><a href="#INSTALL_AWSTATS">Install awstats</a></li>
+            <li><a href="#INSTALL_JAWSTATS">Install jawstats</a></li>
+            <li><a href="#ABOUT_AWSTATS">More about awstats</a></li>
+            <li><a href="#ABOUT_JAWSTATS">More about jawstats</a></li>
+          </ul>
+
+          <a name="ABOUT_SOFTWARE">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              关于开源的apache服务器日志分析软件
+            </h3>
+          </a>
+
+          <p>
+            * awstats（perl）＋Jawstats(php)
+          </p>
+          <p>
+            LogAnalyzer(C): the log formate is fixed
+          </p>
+          <p>
+            Web Analytics(C): imitate GoAccess, support Wordpress and Mediawiki, but is not in common use
+          </p>
+          <p>
+            Log Miner: can not find enough reference material
+          </p>
+          <p>
+            * Webalizer(C)
+          </p>
+          <p>
+            TraceWatch(php): the category of result is less
+          </p>
+          <p>
+            ApacheTop: using command line
+          </p>
+          <p>
+            * GoAccess(C): 
+          </p>
+          <p>
+            analog: 
+          </p>
+          <p>
+            apache live log: real time
+          </p>
+
+          <a name="ABOUT">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              关于awstats和jawstats
+            </h3>
+          </a>
+
+          <p>
+            AWStats是一种免费的高效的日志分析工具，它可以分析web、流、ftp和邮件服务器日志。它的官方地址是：
+            <a href="http://www.awstats.org">www.awstats.org.</a></br>
+            JAWStats是一种免费的web统计和分析包，它是把awstats统计的结果显示出来。它的官方网址是：<a href="http://www.jawstats.com">http://www.jawstats.com</a>
+          </p>
+
+          <a name="ENVIRONMENT">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              配置环境
+            </h3>
+          </a>
+
+          <p>
+              OS: Mac OS X Yosemite 10.10.2 </br>
+              Web server: Apache/2.4.9 (Unix) </br>
+              Website name: 127.0.0.1 </br>
+              Path of apache log file: /var/log/apache2/ </br>
+              Path of apache configure file: /etc/apache2/httpd.conf </br>
+              Path of awstats: /Library/WebServer/Documents/ </br>
+              Path of jawstats: /Library/WebServer/Documents/ </br>
+              Path of awstats data: /var/lib/
+          </p>
+
+          <a name="INSTALL_AWSTATS">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              Install awstats
+            </h3>
+          </a>
+
+          <p>Document: <a href="http://www.awstats.org/docs/awstats_setup.html">http://www.awstats.org/docs/awstats_setup.html</a></p>
+          <p>
+            Before install awstats, the perl should be ready in your server.
+          </P>
+          <p>
+            1. Download the awstats on official website: <a href="http://www.awstats.org/#DOWNLOAD">http://www.awstats.org/#DOWNLOAD</a>. The version of awstats we had downloaded is "Last stable version 7.3 - 2014-07-23 07:50". 
+          </p>
+          <p>
+            2. Explode the package to "/Library/WebServer/Documents/awstats". Change the authority of these package and perl (if you don't do this, when you run awstats perl or use browser to see the result, you may be reminded of "can't access to"):
+            <pre><code>$cd /Library/WebServer/Documents
+$chmod -R 755 awstats
+$chmod +x awstats/tools/*.pl
+$chmod +x awstats/wwwroot/cgi-bin/*.pl</code></pre>
+          </p>
+          <p>
+            3. Create the data directory "awstats" to store awstats data:
+            <pre><code>$cd /var/lib
+$mkdir awstats</code></pre>
+          </p>
+          <p>
+            4. Run the configure script:
+            <pre><code>$cd /Library/WebServer/Documents/awstats/tools
+$perl awstats_configure.pl</code></pre>
+          </p>
+          <p>
+            5. The process when the script is running:
+            <pre><code><font color="black">sheqingbindeMacBook-Air:tools sheqingbin$ sudo perl awstats_configure.pl </font>
+
+----- AWStats awstats_configure 1.0 (build 20140126) (c) Laurent Destailleur -----
+This tool will help you to configure AWStats to analyze statistics for
+one web server. You can try to use it to let it do all that is possible
+in AWStats setup, however following the step by step manual setup
+documentation (docs/index.html) is often a better idea. Above all if:
+- You are not an administrator user,
+- You want to analyze downloaded log files without web server,
+- You want to analyze mail or ftp log files instead of web log files,
+- You need to analyze load balanced servers log files,
+- You want to 'understand' all possible ways to use AWStats...
+Read the AWStats documentation (docs/index.html).
+
+-----> Running OS detected: Mac OS
+Warning: AWStats standard directory on Mac OS X is '/Library/WebServer/awstats'.
+If you want to use standard directory, you should first move all content
+of AWStats distribution from current directory:
+/Library/WebServer/Documents/awstats
+to standard directory:
+/Library/WebServer/awstats
+And then, run configure.pl from this location.
+<font color="black">Do you want to continue setup from this NON standard directory [yN] ? y</font>
+
+-----> Check for web server install
+
+Enter full config file path of your Web server.
+Example: /etc/httpd/httpd.conf
+Example: /usr/local/apache2/conf/httpd.conf
+Example: c:\Program files\apache group\apache\conf\httpd.conf
+Config file path ('none' to skip web server setup):
+<font color="black">> /etc/apache2/httpd.conf</font>
+
+-----> Check and complete web server config file '/etc/apache2/httpd.conf'
+  All AWStats directives are already present.
+
+-----> Update model config file '/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.model.conf'
+  File awstats.model.conf updated.
+
+-----> Need to create a new config file ?
+Do you want me to build a new AWStats config/profile
+<font color="black">file (required if first install) [y/N] ? y</font>
+
+-----> Define config file name to create
+What is the name of your web site or profile analysis ?
+Example: www.mysite.com
+Example: demo
+Your web site, virtual server or profile name:
+<font color="black">> 127.0.0.1</font>
+
+-----> Create config file '/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.127.0.0.1.conf'
+ Config file /Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.127.0.0.1.conf created.
+
+-----> Add update process inside a scheduler
+Sorry, configure.pl does not support automatic add to cron yet.
+You can do it manually by adding the following command to your cron:
+/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.pl -update -config=127.0.0.1
+Or if you have several config files and prefer having only one command:
+/Library/WebServer/Documents/awstats/tools/awstats_updateall.pl now
+<font color="black">Press ENTER to continue... </font>
+
+
+A SIMPLE config file has been created: /Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.127.0.0.1.conf
+You should have a look inside to check and change manually main parameters.
+You can then manually update your statistics for '127.0.0.1' with command:
+> perl awstats.pl -update -config=127.0.0.1
+You can also read your statistics for '127.0.0.1' with URL:
+> http://localhost/awstats/awstats.pl?config=127.0.0.1
+
+<font color="black">Press ENTER to finish...</font></code></pre>
+          </p>
+          <p>
+            Something you should notice when you run the configure script: 1. We should run the awstats_configure.pl as root. 2. The configure script advances us to change the current directory from "/Library/WebServer/Documents/awstats" to standard directory "/Library/WebServer/awstats". But we don't do that and just continue. 3. When we create a new config file, the file will be in directory "/Library/WebServer/Documents/awstats/wwwroot/cgi-bin". In this example, the config file name is awstats.127.0.0.1.conf(awstats.your_input_sitename.conf). 4. When the formate of your apache log file is common, the script will ask you to change the formate of your log file to combined and you should answer "y".
+          </p>
+          <p>
+            6. After running the configure file, we should change manually main parameters of configure file "/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.127.0.0.1.conf" and "/etc/apache2/httpd.conf". After configuring, restart the apache server.
+            <pre><code>$vim /Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.127.0.0.1.conf
+  change LogFile="/var/log/httpd/mylog.log" to LogFile="/var/log/apache2/access_log"
+  <font color="black">(Your should verify other main parameters in "awstats.127.0.0.1.conf", too.
+  Notice, you should change the value of LogFormat if your apache log format is not combined.
+  Set the SiteDomain parameter to the main domain name (127.0.0.1) and HostAlias parameter.)</font>
+
+$vim /etc/apache2/httpd.conf, edit the directory of awstats' parameters at the buttom of configure file:
+  #
+  # Directives to allow use of AWStats as a CGI
+  #
+  Alias /awstatsclasses <font color="black">/Library/WebServer/Documents/awstats/wwwroot/classes/"</font>
+  Alias /awstatscss <font color="black">"/Library/WebServer/Documents/awstats/wwwroot/css/"</font>
+  Alias /awstatsicons <font color="black">"/Library/WebServer/Documents/awstats/wwwroot/icon/"</font>
+  ScriptAlias /awstats/ <font color="black">"/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/"</font>
+ 
+  #
+  # This is to permit URL access to scripts/files in AWStats directory.
+  #
+  &ltDirectory <font color="black">"/Library/WebServer/Documents/awstats/wwwroot"></font>
+      Options None
+      AllowOverride None
+      Order allow,deny
+      Allow from all
+  &lt/Directory>
+
+$ sudo apachectl restart</code></pre>
+          </p>
+          <p>
+            7. Run awstats
+            <pre><code>$cd /Library/WebServer/Documents/awstats/wwwroot/cgi-bin/
+$perl awstats.pl -update -config=127.0.0.1
+Create/Update database for config "./awstats.127.0.0.1.conf" by AWStats version 7.3 (build 20140126)
+From data in log file "/Users/sheqingbin/Desktop/log/access_log"...
+Phase 1 : First bypass old records, searching new record...
+Searching new records from beginning of log file...
+Phase 2 : Now process new records (Flush history on disk after 20000 hosts)...
+Jumped lines in file: 0
+Parsed lines in file: 17451
+ Found 0 dropped records,
+ Found 0 comments,
+ Found 0 blank records,
+ Found 0 corrupted records,
+ Found 0 old records,
+ Found 17451 new qualified records.</code></pre>
+          </p>
+          <p>
+            8. The result abouve shows that awstats perl run successfully. And do as the guide, I can't read my statistics for '127.0.0.1' with URL: http://localhost/awstats/awstats.pl?config=127.0.0.1. The browser shows the source code of awstats.pl. It may be the apache server do not support the perl. But this error is not urgent because I want to use the jawstats to show the result.
+          </p>
+
+          <p>
+            9. Awstats statistics can also be update from a browser. Do it as the document. But I do not do it now.
+          </p>
+
+          <p>
+            10. The awstats update process should be regularly launch to update the statistics.
+            You can add instructions in your crontab if your OS is Unix/Linux.
+            <pre><code>$ vim /etc/crontab
+$ * * * * * perl /......./awstats.pl -update -config=127.0.0.1 #To run script every second</code></pre>
+            You can add instructions with plist perl if your OS is Mac.
+            <pre><code>$ cd /Library/LaunchDaemons or cd /Library/LaunchAgents
+#edit the file like that
+&lt?xml version="1.0" encoding="UTF-8"?>
+&lt!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+&ltplist version="1.0">
+&ltdict>
+  &ltkey>Label&lt/key>
+  &ltstring>com.awstats..cron.plist&lt/string>
+
+  &ltkey>ProgramArguments&lt/key>
+  &ltarray>
+    &ltstring>perl /......./awstats.pl -update -config=127.0.0.1 &lt/string>
+  &lt/array>
+
+  &ltkey>StartCalendarInterval&lt/key>
+  &ltdict>
+    &ltkey>Hour&lt/key>
+    &ltinteger>22&lt/integer>
+    &ltkey>Minute&lt/key>
+    &ltinteger>25&lt/integer>
+    &ltkey>Weekday&lt/key>
+    &ltinteger>2&lt/integer>
+  &lt/dict>
+&lt/dict>
+&lt/plist>
+</code></pre>
+          </p>
+
+          <p>
+            11. If you need to analyse several website, you should create the same number of configure file from step 4 to step 10. When running awstats_configure.pl, you should build a new AWStats config/profile. The website name you input should be different from 127.0.0.1. When running awstats.pl, this perl will read the configuration file awstats.mysite.conf. If the configuration is not found, awstats.pl will read awstats.conf. This is why we should build a new AWStats config/profile when running awstats_configure.pl.
+          </p>
+
+          <p>
+            12. If you want to analyse multiple file, in awstats.127.0.0.1.conf, change LogFile parameters to LogFile="/Library/WebServer/Documents/awstats/tools/logresolvemerge.pl log_file_one log_file_two .... |".
+            Do not forget the "|" at the end.
+          </p>
+
+          <p>
+            13 If you want to analyse multiple site, you could do as below:
+            <pre><code>1. In /var/lib/awstats, make multiple directory as the name of sites to store the data
+2. Run awstats_configure.pl as step 5 and input your sites, and do as step 6.
+3. In your site configure file awstat.yoursite.conf, change parameter DirData="/var/lib/awstats/yoursite"
+4. Run awstats
+5. Config jawstats config file
+// individual site configuration
+  $aConfig["site1"] = array(
+    "statspath"   => "/var/lib/awstats/site1/",
+    "updatepath"  => "/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.pl",
+    "siteurl"     => "http://site1",
+    "sitename"    => "",
+    "theme"       => "default",
+    "fadespeed"   => 250,
+    "password"    => "test",
+    "includes"    => "",
+    "language"    => "en-gb"
+  );
+  
+  $aConfig["site2"] = array(
+    "statspath"   => "/var/lib/awstats/site2/",
+    "updatepath"  => "/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.pl",
+    "siteurl"     => "http://site2",
+    "sitename"    => "",
+    "theme"       => "default",
+    "fadespeed"   => 250,
+    "password"    => "test",
+    "includes"    => "",
+    "language"    => "en-gb"
+  );
+            </code></pre>
+          </p>
+
+          <a name="INSTALL_JAWSTATS">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              Install jawstats
+            </h3>
+          </a>
+
+          <p>Document: <a href="http://www.jawstats.com/documentation">http://www.jawstats.com/documentation</a></p>
+          <p>
+            1. Download the jawstats on official website: <a href="http://www.jawstats.com/download">http://www.jawstats.com/download.</a> The version of jawstats we have downloaded is "jawstats-0.7beta".
+          <p>
+            2. Explode the package to "/Library/WebServer/Documents/jawstats". Change the authority of these package (if you don't do this, when you run awstats perl or use browser to see the result, you may be reminded of "can't access to"):
+            <pre><code>$cd /Library/WebServer/Documents
+$chmod -R 755 jawstats</code></pre>
+          </p>
+          <p>
+            3. Edit the configure file as bellow:
+            <pre><code>$cd /Library/WebServer/Documents/jawstats/
+$cp config.dist.php config.php
+$vim config.php
+&lt?php
+  // core config parameters
+  $sDefaultLanguage      = "en-gb";
+  $sConfigDefaultView    = "thismonth.all";
+  $bConfigChangeSites    = true;
+  $bConfigUpdateSites    = true;
+  $sUpdateSiteFilename   = "xml_update.php"; 
+
+  // individual site configuration
+  $aConfig["127.0.0.1"] = array(
+    "statspath"   => "/var/lib/awstats/",   //notice: do not forget the "/" at the end
+    "updatepath"  => "/Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.pl",
+    "siteurl"     => "http://127.0.0.1",
+    "sitename"    => "",
+    "theme"       => "default",
+    "fadespeed"   => 250,
+    "password"    => "test",
+    "includes"    => "",
+    "language"    => "en-gb"
+  );
+  
+  $aConfig["site2"] = array(
+    "statspath"   => "/path/to/data/",
+    "updatepath"  => "/path/to/awstats.pl/",
+    "siteurl"     => "http://www.my-2nd-domain.com",
+    "sitename"    => "",
+    "theme"       => "default",
+    "fadespeed"   => 250,
+    "password"    => "my-2nd-password",
+    "includes"    => "",
+    "language"    => "en-gb"
+  ); 
+?></code></pre>
+          </p>
+            4. See the result through URL: http://127.0.0.1/jawstats/index.php
+          </p>
+          <p>
+            <img src="./images/install_jawstats_index.png">
+          </p>
+
+          <p>
+            5. Countries module
+          </p>
+          <p>
+            If you can not see the country information, you add this module in awstats:
+            <pre><code>1. Download geo modele: <a href="http://dev.maxmind.com/geoip/legacy/geolite/">http://dev.maxmind.com/geoip/legacy/geolite/</a>
+2. Some blog ask to install Geo-IP module and Geo-IP-PurePerl module, but here I do not need
+3. Download "GeoLite Country" and place it to "/Library/WebServer/Documents/awstats/Geo-data"
+4. $ vim /Library/WebServer/Documents/awstats/wwwroot/cgi-bin/awstats.127.0.0.1.conf
+   change LoadPlugin="geoip GEOIP_STANDARD /pathto/GeoIP.dat" to LoadPlugin="geoip GEOIP_STANDARD /Library/WebServer/Documents/awstats/Geo-data/GeoIP.dat"
+5. the origin jawstats do not support to show the information of cities and regions, so if you run awstats with city module and resion module, jawstats will error.
+            </code></pre>
+          </p>
+
+          <a name="ABOUT_AWSTATS">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              More about awstats
+            </h3>
+          </a>
+
+          <h4>
+            1. A full log analysis enables AWStats to show you the following information:
+          </h4>
+<p>
+* Number of visits, and number of unique visitors,
+</br>* Visits duration and last visits,
+</br>* Authenticated users, and last authenticated visits,
+</br>* Days of week and rush hours (pages, hits, KB for each hour and day of week),
+</br>* Domains/countries of hosts visitors (pages, hits, KB, 269 domains/countries detected, GeoIp detection),
+</br>* Hosts list, last visits and unresolved IP addresses list,
+</br>* Most viewed, entry and exit pages,
+</br>* Files type,
+</br>* Web compression statistics (for mod_gzip or mod_deflate),
+</br>* OS used (pages, hits, KB for each OS, 35 OS detected),
+</br>* Browsers used (pages, hits, KB for each browser, each version (Web, Wap, Media browsers: 97 browsers, more than 450 if using browsers_phone.pm library file),
+</br>* Visits of robots (319 robots detected),
+</br>* Worms attacks (5 worm's families),
+</br>* Search engines, keyphrases and keywords used to find your site (The 115 most famous search engines are detected like yahoo, google, altavista, etc...),
+</br>* HTTP errors (Page Not Found with last referrer, ...),
+</br>* Other personalized reports based on url, url parameters, referer field for miscellanous/marketing purpose,
+</br>* Number of times your site is "added to favourites bookmarks".
+</br>* Screen size (need to add some HTML tags in index page).
+</br>* Ratio of Browsers with support of: Java, Flash, RealG2 reader, Quicktime reader, WMA reader, PDF reader (need to add some HTML tags in index page).
+</br>* Cluster report for load balanced servers ratio.
+</p>
+
+          <h4>
+            2. AWStats also supports the following features:
+          </h4>
+<p>
+* Can analyze a lot of log formats: Apache NCSA combined log files (XLF/ELF) or common (CLF), IIS log files (W3C), WebStar native log files and other web, proxy, wap or streaming servers log files (but also ftp or mail log files). See AWStats F.A.Q. for examples.
+</br>* Works from command line and from a browser as a CGI (with dynamic filters capabilities for some charts),
+</br>* Update of statistics can be made from a web browser and not only from your scheduler,
+</br>* Unlimited log file size, support split log files (load balancing system),
+</br>* Support 'not correctly sorted' log files even for entry and exit pages,
+</br>* Reverse DNS lookup before or during analysis, support DNS cache files,
+</br>* Plugin for country detection from IP location (use geoip country database or client domain name),
+</br>* Plugin for city detection from IP location (use geoip city database),
+</br>* Plugins for US/Canadian Region , ISP and/or Organizations reports (require non free third product geoipregion, geoipisp and/or geoiporg database)
+</br>* WhoIS links,
+</br>* A lot of options/filters and plugins can be used,
+</br>* Multi-named web sites supported (virtual servers, great for web-hosting providers),
+</br>* Cross Site Scripting Attacks protection,
+</br>* Several languages. See AWStats F.A.Q. for full list.
+</br>* No need of rare perl libraries. All basic perl interpreters can make AWStats working,
+</br>* Dynamic reports as CGI output.
+</br>* Static reports in one or framed HTML/XHTML pages, experimental PDF export,
+</br>* Look and colors can match your site design, can use CSS,
+</br>* Help and tooltips on HTML reported pages,
+</br>* Easy to use (Just one configuration file to edit),
+</br>* Analysis database can be stored in XML format for XSLT processing,
+</br>* A Webmin module,
+</br>* Absolutely free (even for web hosting providers), with sources (GNU General Public License),
+</br>* Available on all platforms,
+</br>* AWStats has a XML Portable Application Description.
+</p>
+
+          <h4>
+            3. Requirements:
+          </h4>
+<p>
+To use AWStats, you need the following requirements:
+</br>* Your server must log web access in a log file you can read.
+</br>* You must be able to run perl scripts (.pl files) from command line and/or as CGI (Perl 5.007003 or higher required to run AWStats 6.9 or higher).
+</br>If not, you can solve this by downloading last Perl version at ActivePerl (Win32) or Perl.com (Unix/Linux/Other).
+See AWStats F.A.Q. to have examples of supported OS and Web servers.
+</p>
+
+          <a name="ABOUT_JAWSTATS">
+            <h3>
+              <a class="anchor" aria-hidden="true">
+                <span class="octicon octicon-link"></span>
+              </a>
+              More about jawstats
+            </h3>
+          </a>
+          
+          <h4>
+            1. In "./index.php", rewrite "error_reporting(0)" as "error_reporting(E_ALL)".
+          </h4>
+          <p>The browser can show you the error notice.</p>
+
+          <h4>
+            2. Jawstats reads and shows the report of awstats. The report will be as bellow:
+          </h4>
+<p>
+<font color="balck">* "Change Month":</font> select the month you want to see
+<br><font color="balck">* "Change site":</font> awstats support changing between multiple site
+<br><font color="balck">* "Change Language":</font> jawstats sill do not support Chinese
+<br><font color="balck">* "This month":</font> Overview or calendar of parameters
+<table border="1">
+  <tr>
+    <th>Day</th>
+    <th>Date</th>
+    <th>Visits</th>
+    <th>Pages</th>
+    <th>per Visits</th>
+    <th>Hits</th>
+    <th>per Visits</th>
+    <th>BW</th>
+    <th>per Visits</th>
+  </tr>
+  <tr>
+    <td>day of the week</td>
+    <td>date</td>
+    <td>total visits of this month</td>
+    <td>total pages of this month</td>
+    <td>pages of each visit</td>
+    <td>total hits of this month</td>
+    <td>hits of each visit</td>
+    <td>bandwidth</td>
+    <td>bandwidth of each visit</td>
+  </tr>
+</table>
+<br><font color="balck">* "All Months":</font> visitors of each month and each year
+<table border="1">
+  <tr>
+    <th>Month or Year</th>
+    <th>Total Visitors</th>
+    <th>Visitors per Day</th>
+    <th>Unique Visitors</th>
+    <th>Unique Ratio</th>
+    <th>Pages</th>
+    <th>Hits</th>
+    <th>BW</th>
+  </tr>
+  <tr>
+    <td>Month or Year</td>
+    <td>total visitors</td>
+    <td>visitor per day</td>
+    <td>number of visitors with different IP and cookie</td>
+    <td>Unique Visitors / Total Visitors</td>
+    <td>total pages</td>
+    <td>total hits</td>
+    <td>bandwidth</td>
+  </tr>
+</table>
+<br><font color="balck">* "Hours":</font> Visitors over 24 hours in this month:
+<table border="1">
+  <tr>
+    <th>Hour</th>
+    <th>Pages</th>
+    <th>  %  </th>
+    <th>+/-</th>
+    <th>Hits</th>
+    <th>  %  </th>
+    <th>+/-</th>
+    <th>BW</th>
+    <th>  %  </th>
+    <th>+/-</th>
+    <th>Not Viewed Pages</th>
+    <th>Not Viewed Hits</th>
+    <th>Not Viewed BW</th>
+  </tr>
+  <tr>
+    <td>which hour</td>
+    <td>total pages at a certain hour of every day</td>
+    <td>Pages / total pages</td>
+    <td>(Pages - total pages / 24) / (total pages / 24)</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>pages not viewed by a "human", link robot or worm</td>
+    <td>.</td>
+    <td>.</td>
+  </tr>
+</table>
+<br><font color="balck">*Broesers:</font>
+<br>Browser Families: different from the type of browsers
+<br>All Families: different from the type and version of browsers
+<br><font color="balck">*Countries</font>
+<br><font color="balck">*Filetypes:</font>
+<table border="1">
+  <tr>
+    <th>Filetype</th>
+    <th>Description</th>
+    <th>Hits</th>
+    <th>%</th>
+    <th>Bandwidth</th>
+    <th>%</th>
+    <th>Average Size</th>
+  </tr>
+  <tr>
+    <td>.</td>
+    <td>.</td>
+    <td>total hits on this filetype in this month</td>
+    <td>Hits / total Hits</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+  </tr>
+</table>
+<br><font color="balck">*Operating System:</font>
+<br>Operating System Families: different from the type of OS
+<br>All Operating Systems: different from the type and version of OS
+<br><font color="balck">*Pages:</font>
+<table border="1">
+  <tr>
+    <th>URL</th>
+    <th>Pages</th>
+    <th>%</th>
+    <th>Bandwidth</th>
+    <th>%</th>
+    <th>Entry</th>
+    <th>%</th>
+    <th>Exit</th>
+    <th>%</th>
+  </tr>
+  <tr>
+    <td>path of page</td>
+    <td>times of viewing this page</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>entry website through this page</td>
+    <td>.</td>
+    <td>exit weisite through this page</td>
+    <td>.</td>
+  </tr>
+</table>
+<br><font color="balck">*Referrers:</font> referrers mean the URL that is searched, referring domains mean the domains that search our website
+<table border="1">
+  <tr>
+    <th>Search Engine</th>
+    <th>Pages</th>
+    <th>%</th>
+    <th>Hits</th>
+    <th>%</th>
+  </tr>
+  <tr>
+    <td>.</td>
+    <td>pages searched by this engine</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+  </tr>
+</table>
+<br><font color="balck">*Spiders:</font>
+<table border="1">
+  <tr>
+    <th>Spider</th>
+    <th>Hits</th>
+    <th>%</th>
+    <th>Bandwidth</th>
+    <th>%</th>
+    <th>Last Visit</th>
+    <th>Robots.txt</th>
+    <th>%</th>
+  </tr>
+  <tr>
+    <td>spider type</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>.</td>
+    <td>how many times that spider visit robot.txt</td>
+    <td>.</td>
+  </tr>
+</table>
+<br><font color="balck">*Searches:</font> calculate frequency of Keyword and Keyphrases
+<br><font color="balck">*Sessions:</font> about the session length
+<br><font color="balck">*Status:</font> HTTP status codes when visit the website
+</p>
+        <h3>To do list</h3>
+        <p>read the source code</p>
+        <p>try to add new module</p>
+        <p>add city and region in jawstats</p>
+        </section>
+
+        <aside id="sidebar">
+          <script type="text/javascript" language="javascript" src="share_aside.js"></script>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
